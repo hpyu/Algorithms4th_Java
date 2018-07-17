@@ -31,10 +31,9 @@ public class BinarySearch
     private static boolean isSorted(int[] a)
     {
         for (int i = 1; i < a.length - 1; i++)
-        {
             if (a[i] < a[i-1])
                 return false;
-        }
+
         return true;
     }
 
@@ -54,7 +53,8 @@ public class BinarySearch
         while (lo <= hi)
         {
             int mid = lo + (hi - lo) / 2;
-            if      (key < a[mid]) hi = mid -1;
+
+            if      (key < a[mid]) hi = mid - 1;
             else if (key > a[mid]) lo = mid + 1;
             else    return mid;
         }
@@ -63,25 +63,28 @@ public class BinarySearch
     }
 
     @Deprecated
+    // Deprecate because rank is an ambiguous name
     public static int rank(int key, int[] a) { return indexOf(a, key); }
 
     public static void main(String[] args)
     {
-        In inw = new In(args[0]);
-        In inT = new In(args[1]);
-        int [] whitelist = inw.readAllInts();
+        // Intellij doesn't support Stdin input, use file argument instead
+        In inWhitelist  = new In(args[0]);
+        In inKeys       = new In(args[1]);
 
+        int [] whitelist = inWhitelist.readAllInts();
+
+        // Database array has to be sorted before BinarySearch
         Arrays.sort(whitelist);
 
-        while (!inT.isEmpty())
+        while (!inKeys.isEmpty())
         {
-            int key = inT.readInt();
+            int key = inKeys.readInt();
 
             if (indexOf(whitelist, key) == -1)
-            {
                 StdOut.printf("not found: %d\n", key);
-            }
         }
+
         StdOut.println("finished.");
     }
 }

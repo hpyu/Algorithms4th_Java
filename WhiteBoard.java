@@ -27,18 +27,19 @@ public class WhiteBoard {
     private WhiteBoard() { };
 
     /**
-     * Draw function curves with StdDraw
+     * This method draw some typical functions curves such as N, N^2 and NlogN
      *
      * @param N Number of random number
      * @throws IllegalArgumentException if {@code N} is negative
      */
-    public static void drawFunctionValues (int N)
+    public static void drawTypicalFunctionCurves (int N)
     {
         if (N < 0) throw new IllegalArgumentException("N is negative");
 
         StdDraw.setXscale(0, N);
         StdDraw.setYscale(0, N*N);
         StdDraw.setPenRadius(0.003);
+
         for (int i = 1; i < N; i++) {
             StdDraw.point(i, i);
             StdDraw.point(i, i*i);
@@ -47,52 +48,65 @@ public class WhiteBoard {
     }
 
     /**
-     * Draw random array in column shape sort or not sort
+     * Draw random array in column shape, sorted or unsorted
      *
      * @param N Number of random number
      * @throws IllegalArgumentException if {@code N} is negative
      */
-    public static void drawArrayOfRandomValues (int N)
+    public static void drawColumnGraphOfRandomValues (int N)
     {
         if (N < 0) throw new IllegalArgumentException("N is negative");
 
         double[] a = new double[N];
-        for (int i = 0; i < N; i++) a[i] = StdRandom.uniform();
+        StdRandom.setSeed(1);
+        for (int i = 0; i < N; i++) {
+            a[i] = StdRandom.uniform();
+            StdOut.println(a[i]);
+        }
 
         Arrays.sort(a);
+
+        StdDraw.setXscale(0.0, N*1.0);
+        // Strange, rh is in [0.0, 1.0), but column trunked when Yscale is 1.0
+        StdDraw.setYscale(0.0, 2.0);
+
         for (int i = 1; i < N; i++) {
-            double x = 1.0*i/N;
-            double y = a[i]/2.0;
-            double rw = 0.3/N;
-            double rh = a[i]/2.0;
+            // Each column is a filled rectangular
+            double x = i;
+            double y = a[i];
+            double rw = 0.3;
+            double rh = a[i];
             StdDraw.filledRectangle(x, y, rw, rh);
         }
     }
 
     /**
-     * Implement head/tail coin flip with Counter and StdRandom
+     * This method simulates randomly flipping of a coin and counts head/tail
      *
      * @param T The times to flip the coin
      * @throws IllegalArgumentException if {@code T} is negative
      */
-    public static void flip (int T)
+    public static void flipCoinAndCount (int T)
     {
-        if (T < 0) throw new IllegalArgumentException("T is negative");
+        // Just for test the usage of assert, assert means ensure
         assert T > 0 : "Non-Positive time number";
+        if (T < 0) throw new IllegalArgumentException("T is negative");
+
         Counter heads = new Counter("head");
         Counter tails = new Counter("tail");
 
         for (int i = 0; i < T; i++)
         {
+            // Each side has 50% probability
             if (StdRandom.bernoulli(0.5))
-                heads.increment();
+                heads.increase();
             else
-                tails.increment();
+                tails.increase();
         }
 
-        StdOut.printf("%d\t heads\n", heads.tally());
-        StdOut.printf("%d\t tails\n", tails.tally());
-        int d = Math.abs(heads.tally() - tails.tally());
+        StdOut.printf("%d\t heads\n", heads.getCount());
+        StdOut.printf("%d\t tails\n", tails.getCount());
+        int d = Math.abs(heads.getCount() - tails.getCount());
         StdOut.printf("deta: %d, %%%.6f\n", d, (d*100.0)/T);
     }
 
@@ -103,9 +117,9 @@ public class WhiteBoard {
      */
     public static void main (String[] args)
     {
-        //drawFunctionValues(100);
-        //drawArrayOfRandomValues(500);
-        flip(10000);
+        //drawTypicalFunctionCurves(100);
+        //drawColumnGraphOfRandomValues(50);
+        flipCoinAndCount(10000);
     }
 }
 
