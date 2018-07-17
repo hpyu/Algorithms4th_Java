@@ -28,7 +28,7 @@ import java.util.Arrays;
  */
 public class BinarySearch
 {
-    private boolean isSorted(int[] a)
+    private static boolean isSorted(int[] a)
     {
         for (int i = 1; i < a.length - 1; i++)
         {
@@ -46,7 +46,7 @@ public class BinarySearch
      */
     public static int indexOf(int[] a, int key)
     {
-        if (!isSorted(a)) throw new IllegalArgumentException("Array is not sorted increasingly.")
+        if (!isSorted(a)) throw new IllegalArgumentException("Array is not sorted increasingly.");
 
         int lo = 0;
         int hi = a.length - 1;
