@@ -54,6 +54,8 @@ public class Bag<Item> implements Iterable<Item> {
 
     private class ListIterator implements Iterator<Item>
     {
+        // algs4 lib pass first via iterator(first),
+        // and current is set in ListIterator() constructor
         private Node current = first;
 
         public boolean hasNext() {
