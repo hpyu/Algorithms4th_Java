@@ -43,8 +43,7 @@ public class Bag<Item> implements Iterable<Item> {
     }
 
     public boolean isEmpty() {
-        if (first == null)  return true;
-        else                return false;
+        return first == null;
     }
 
     public long size() { return count; }
@@ -58,11 +57,8 @@ public class Bag<Item> implements Iterable<Item> {
         private Node current = first;
 
         public boolean hasNext() {
-            if (current == null)    return false;
-            else                    return true;
+            return current != null;
         }
-
-        public void remove() { }
 
         /**
          * {@code next} method move current reference to next node, return the
@@ -80,6 +76,8 @@ public class Bag<Item> implements Iterable<Item> {
             current = current.next;
             return item;
         }
+
+        public void remove() { }
     }
 
     public static void main(String[] args)
