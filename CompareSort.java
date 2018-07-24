@@ -4,9 +4,9 @@ public class CompareSort {
     public static double time(String alg, Comparable[] a)
     {
         Stopwatch timer = new Stopwatch();
-        if (alg.equals("Bubble")) Bubble.sort(a);
-        else if (alg.equals("Selection")) Selection.sort(a);
-        else if (alg.equals("Insertion")) Insertion.sort(a);
+        if (alg.equals("Bubble")) Sort.bubble(a);
+        else if (alg.equals("Selection")) Sort.selection(a);
+        else if (alg.equals("Insertion")) Sort.insertion(a);
         else System.out.println("Algorithm " + alg + " not implemented");
 
         return timer.eclipseTime();
@@ -28,8 +28,8 @@ public class CompareSort {
 
     public static void main(String[] args)
     {
-        String alg1 = "Selection";
-        String alg2 = "Insertion";
+        String alg1 = "Insertion";
+        String alg2 = "Bubble";
         int N = 1024;
         int T = 1000;
 
