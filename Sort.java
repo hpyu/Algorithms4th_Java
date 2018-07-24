@@ -58,6 +58,24 @@ public class Sort {
         }
     }
 
+    public static void shell(Comparable[] a)
+    {
+        int N = a.length;
+        int h = 1;
+        while(h < N/3) h = h*3 + 1;
+        while(h >= 1)
+        {
+            // h-sort the array
+            for (int i = h; i < N; i++)
+            {
+                //insert a[i] among a[i-h], a[i-2*h], a[i-3*h]...
+                for (int j = i; j >= h && less(a[j], a[j-h]); j-=h )
+                    exch(a, j, j-h);
+            }
+            h = h/3;
+        }
+    }
+
     /* TODO Remove below duplicated code with SortSelection*/
     public static boolean less(Comparable v, Comparable w) {
         statLess++;
@@ -95,7 +113,7 @@ public class Sort {
     {
         In in = new In(args[0]);
         String[] data = in.readAllStrings();
-        String [] algs = {"Bubble", "Insertion", "Selection"};
+        String [] algs = {"Bubble", "Insertion", "Selection", "Shell"};
 
         for (String alg: algs) {
             String[] a = data.clone();
@@ -106,6 +124,7 @@ public class Sort {
             if      (alg.equals("Bubble"))      Sort.bubble(a);
             else if (alg.equals("Insertion"))   Sort.insertion(a);
             else if (alg.equals("Selection"))   Sort.selection(a);
+            else if (alg.equals("Shell"))   Sort.shell(a);
             else {
                 System.out.println(alg + " is not implemented");
                 break;

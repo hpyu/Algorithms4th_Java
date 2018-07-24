@@ -7,6 +7,7 @@ public class CompareSort {
         if (alg.equals("Bubble")) Sort.bubble(a);
         else if (alg.equals("Selection")) Sort.selection(a);
         else if (alg.equals("Insertion")) Sort.insertion(a);
+        else if (alg.equals("Shell")) Sort.shell(a);
         else System.out.println("Algorithm " + alg + " not implemented");
 
         return timer.eclipseTime();
@@ -26,10 +27,8 @@ public class CompareSort {
         return totalTime;
     }
 
-    public static void main(String[] args)
+    public static void compareInPair(String alg1, String alg2)
     {
-        String alg1 = "Insertion";
-        String alg2 = "Bubble";
         int N = 1024;
         int T = 1000;
 
@@ -38,5 +37,30 @@ public class CompareSort {
 
         System.out.printf("For %d doubles,\n", N);
         System.out.printf("%s is %.2f times faster than %s\n", alg1, alg2Time/alg1Time, alg2);
+    }
+
+    public static void compareInGroup(String[] algs)
+    {
+        int N = 1024;
+        int T = 1000;
+        double timeBubble = 0.0;
+
+        System.out.printf("%-10s %-8s %-8s\n", "Alg", "Time", "RatioToBubble");
+
+        for (String alg : algs)
+        {
+            double time = timeRandomInput(alg, N, T);
+            if (alg.equals("Bubble")) timeBubble = time;
+
+            System.out.printf("%-10s %-8.3f %-8.3f\n", alg, time, timeBubble/time);
+        }
+    }
+
+    public static void main(String[] args)
+    {
+        String [] algs = {"Bubble", "Insertion", "Selection", "Shell"};
+
+        compareInPair("Insertion", "Shell");
+        compareInGroup(algs);
     }
 }

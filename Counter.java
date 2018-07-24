@@ -19,7 +19,7 @@ public class Counter {
 
     public String toString() { return count + " " + name; }
 
-    // TODO: This test code is ugly, write format unit test later
+    // TODO: This test code is ugly, write formal unit test later
     public static void main (String[] args)
     {
         Counter counter1 = new Counter("Counter1");
