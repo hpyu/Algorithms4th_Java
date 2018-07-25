@@ -58,25 +58,51 @@ public class Sort {
         }
     }
 
+    /**
+     * shell sort method compensates the shortage of insertion sort that's hard
+     * to exchange items in long distance, and utilize the strength of insertion
+     * sort that's high performance on partially sorted items
+     * e.g.
+     * Index   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15
+     * input   S  H  E  L  L  S  O  R  T  E  X  A  M  P  L  E
+     * 13-sort P  H  E  L  L  S  O  R  T  E  X  A  M  S  L  E
+     * 4-sort  L  E  E  A  M  H  L  E  P  S  O  L  T  S  X  R
+     * 1-sort  A  E  E  E  H  L  L  L  M  O  P  R  S  S  T  X
+     *
+     * TODO: know the algorithm logic but can't write below code clearly
+     * the index
+     */
     public static void shell(Comparable[] a)
     {
         int N = a.length;
         int h = 1;
-        while(h < N/3) h = h*3 + 1;
+        /**
+         * step number of increasing sequence
+         * can be any small number, such as 2, 3, 4, 5, 6
+         * 3 seems best
+         */
+        int STEP =  3;
+
+        // get the highest index of h sequence
+        while(h < N/STEP) h = h*STEP + 1; // 1, 4, 13, 40, 121, 364, 1093, ...
+
         while(h >= 1)
         {
             // h-sort the array
             for (int i = h; i < N; i++)
             {
-                //insert a[i] among a[i-h], a[i-2*h], a[i-3*h]...
-                for (int j = i; j >= h && less(a[j], a[j-h]); j-=h )
-                    exch(a, j, j-h);
+                //System.out.println("i = " + i);
+                for (int j = i; j >= h && less(a[j], a[j-h]); j-=h ) {
+                //for (int j = i; j >= h; j-=h ) {
+                    //System.out.printf("     j= %d exch(%d, %d)\n" , j, j , j-h);
+                    exch(a, j, j - h);
+                }
             }
-            h = h/3;
+            // iterate increment sequence reversely, e.g. 121,40,13, 4, 1
+            h = h/STEP;
         }
     }
 
-    /* TODO Remove below duplicated code with SortSelection*/
     public static boolean less(Comparable v, Comparable w) {
         statLess++;
         return v.compareTo(w) < 0;
@@ -90,7 +116,11 @@ public class Sort {
     public static boolean isSorted(Comparable[] a)
     {
         for (int i = 0; i < a.length-1; i++) {
-            if (!less(a[i], a[i+1])) return false;
+            if (!less(a[i], a[i+1])) {
+                System.out.printf("isSorted false: a[%d]=%s, a[%d] = %s\n",
+                        i, a[i], i+1, a[i+1]);
+                return false;
+            }
         }
 
         return true;

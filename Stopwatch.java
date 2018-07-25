@@ -11,6 +11,7 @@ public class Stopwatch {
     }
 
     // call a method to check the eclipsed time
+    // return ms
     public double  eclipseTime()
     {
         long now_us = System.currentTimeMillis();
