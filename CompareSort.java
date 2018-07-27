@@ -8,6 +8,8 @@ public class CompareSort {
         else if (alg.equals("Selection")) Sort.selection(a);
         else if (alg.equals("Insertion")) Sort.insertion(a);
         else if (alg.equals("Shell")) Sort.shell(a);
+        else if (alg.equals("MergeTD")) Sort.mergeTD(a);
+        else if (alg.equals("MergeBU")) Sort.mergeBU(a);
         else System.out.println("Algorithm " + alg + " not implemented");
 
         return timer.eclipseTime();
@@ -58,7 +60,8 @@ public class CompareSort {
 
     public static void main(String[] args)
     {
-        String [] algs = {"Bubble", "Insertion", "Selection", "Shell"};
+        String [] algs = {"Bubble", "Insertion", "Selection", "Shell",
+                          "MergeTD", "MergeBU"};
 
         compareInPair("Insertion", "Shell");
         compareInGroup(algs);

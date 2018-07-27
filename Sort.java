@@ -3,9 +3,10 @@ import edu.princeton.cs.algs4.In;
 public class Sort {
     static int statLess = 0;
     static int statExch = 0;
+    static Comparable[] aux;
 
     public static void insertion(Comparable[] a) {
-        // Selection sort Algorithm
+        // Insertion sort Algorithm
         for (int i = 1; i < a.length; i++) {
             /**
              * If less() is moved from for condition to for body, it's bubble sort
@@ -23,6 +24,16 @@ public class Sort {
              */
 
             for (int j = i; j > 0 && less(a[j], a[j-1]); j--) {
+                exch(a, j, j-1);
+            }
+        }
+    }
+
+    private static void insertion(Comparable[] a, int lo, int hi) {
+        // Insertion algorithm for some recursive sorting optimization
+        // e.g. used in Merge Top-Down recursive sorting
+        for (int i = lo+1; i <= hi; i++) {
+            for (int j = i; j > lo && less(a[j], a[j-1]); j--) {
                 exch(a, j, j-1);
             }
         }
@@ -103,9 +114,65 @@ public class Sort {
         }
     }
 
+    // merge sort using Top-down recursive method
+    public static void mergeTD(Comparable[] a)
+    {
+        int N  = a.length;
+        aux = new Comparable[N];
+        mergeTD(a, 0, N-1);
+    }
+
+    private static void mergeTD(Comparable[] a, int lo, int hi)
+    {
+        //if (lo >= hi) return;
+        if (lo + 8 >= hi) {
+            // use insertion for small section increase about 15% performance
+            insertion(a, lo, hi);
+            return;
+        }
+
+        int mid = lo + (hi - lo)/2;
+
+        mergeTD(a, lo, mid);
+        mergeTD(a, mid+1, hi);
+
+        merge(a, lo, mid, hi);
+    }
+
+    private static void merge(Comparable[] a, int lo, int mid,  int hi)
+    {
+        for (int i = lo; i <= hi; i++) {
+            aux[i] = a[i];
+        }
+
+        int i = lo;
+        int j = mid+1;
+        for (int k = lo; k <= hi; k++) {
+            if (i > mid) { a[k] = aux[j++]; continue; }
+            if (j > hi)  { a[k] = aux[i++]; continue; }
+            if (less(aux[i], aux[j])) a[k] = aux[i++];
+            else                      a[k] = aux[j++];
+        }
+    }
+
+    // merge sort using bottom up method
+    public static void mergeBU(Comparable[] a)
+    {
+        int N = a.length;
+        aux = new Comparable[N];
+
+        for (int sz = 1; sz < N; sz = sz + sz) {
+            for (int lo = 0; lo < N-sz; lo = lo+sz+sz) {
+                int mid = lo + sz -1 ;
+                int hi = Math.min(lo + sz + sz - 1, N - 1);
+                merge(a, lo, mid, hi);
+            }
+        }
+    }
+
     public static boolean less(Comparable v, Comparable w) {
         statLess++;
-        return v.compareTo(w) < 0;
+        return v.compareTo(w) <= 0;
     }
 
     public static void exch(Comparable[] a, int i, int j) {
@@ -117,8 +184,6 @@ public class Sort {
     {
         for (int i = 0; i < a.length-1; i++) {
             if (!less(a[i], a[i+1])) {
-                System.out.printf("isSorted false: a[%d]=%s, a[%d] = %s\n",
-                        i, a[i], i+1, a[i+1]);
                 return false;
             }
         }
@@ -143,7 +208,8 @@ public class Sort {
     {
         In in = new In(args[0]);
         String[] data = in.readAllStrings();
-        String [] algs = {"Bubble", "Insertion", "Selection", "Shell"};
+        String [] algs = {/*"Bubble", "Insertion", "Selection", */"Shell",
+                "MergeTD", "MergeBU"};
 
         for (String alg: algs) {
             String[] a = data.clone();
@@ -154,7 +220,9 @@ public class Sort {
             if      (alg.equals("Bubble"))      Sort.bubble(a);
             else if (alg.equals("Insertion"))   Sort.insertion(a);
             else if (alg.equals("Selection"))   Sort.selection(a);
-            else if (alg.equals("Shell"))   Sort.shell(a);
+            else if (alg.equals("Shell"))       Sort.shell(a);
+            else if (alg.equals("MergeTD"))     Sort.mergeTD(a);
+            else if (alg.equals("MergeBU"))     Sort.mergeBU(a);
             else {
                 System.out.println(alg + " is not implemented");
                 break;
