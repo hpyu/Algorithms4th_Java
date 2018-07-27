@@ -12,6 +12,10 @@ public class CompareSort {
         else if (alg.equals("MergeBU")) Sort.mergeBU(a);
         else System.out.println("Algorithm " + alg + " not implemented");
 
+        if (!Sort.isSorted(a)) {
+            System.out.println("Algorithm " + alg + " result is not sorted");
+            return -1;
+        }
         return timer.eclipseTime();
     }
 
@@ -43,8 +47,8 @@ public class CompareSort {
 
     public static void compareInGroup(String[] algs)
     {
-        int N = 1024;
-        int T = 1000;
+        int N = 10550;
+        int T = 100;
         double timeBubble = 0.0;
 
         System.out.printf("%-10s %-8s %-8s\n", "Alg", "Time", "RatioToBubble");

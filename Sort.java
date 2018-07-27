@@ -161,7 +161,13 @@ public class Sort {
         int N = a.length;
         aux = new Comparable[N];
 
-        for (int sz = 1; sz < N; sz = sz + sz) {
+        int minSz = 16;
+        for (int lo = 0; lo < N-minSz; lo = lo+minSz+minSz) {
+            int hi = Math.min(lo + minSz + minSz - 1, N - 1);
+            insertion(a, lo, hi);
+        }
+
+        for (int sz = minSz*2; sz < N; sz = sz + sz) {
             for (int lo = 0; lo < N-sz; lo = lo+sz+sz) {
                 int mid = lo + sz -1 ;
                 int hi = Math.min(lo + sz + sz - 1, N - 1);
