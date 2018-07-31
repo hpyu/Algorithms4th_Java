@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class Sort {
     static int statLess = 0;
@@ -176,6 +177,72 @@ public class Sort {
         }
     }
 
+    public static void quick(Comparable[] a)
+    {
+        int lo = 0;
+        int hi = a.length -1;
+
+        quick(a, lo, hi);
+    }
+
+    private static void quick(Comparable[] a, int lo, int hi)
+    {
+        if (lo >= hi) return;
+
+        int j = partition(a, lo, hi);
+        quick(a, lo, j-1);
+        quick(a, j+1, hi);
+    }
+
+    private static int partition(Comparable[] a, int lo, int hi)
+    {
+        int i = lo;
+        int j = hi+1;
+
+        while(true)
+        {
+            while(less(a[++i], a[lo])) if (i == hi) break;
+            while(less(a[lo], a[--j])) if (j == lo) break;
+            if (i >= j) break;
+            exch(a, i, j);
+        }
+        exch(a, lo, j);
+
+        return j;
+    }
+
+    public static void quick3Way(Comparable[] a)
+    {
+        int lo = 0;
+        int hi = a.length -1;
+
+        quick(a, lo, hi);
+    }
+
+    // 3 Way quick sort can reach nearly linear for many repeated items array
+    private static void quick3Way(Comparable[] a, int lo, int hi)
+    {
+        if (lo >= hi) return;
+
+        int lt = lo;
+        int gt = hi;
+        int i = lo + 1;
+        Comparable v = a[lo];
+
+        while(lt < gt)
+        {
+            int cmp = a[i].compareTo(v);
+            if (cmp < 0) exch(a, lt++, i++);
+            else if (cmp > 0) exch(a, i, gt--);
+            else i++;
+        }
+
+        // only recurse to the lower and higher part
+        quick3Way(a, lo, lt - 1);
+        quick3Way(a, gt + 1, hi);
+    }
+
+
     public static boolean less(Comparable v, Comparable w) {
         statLess++;
         return v.compareTo(w) <= 0;
@@ -215,7 +282,7 @@ public class Sort {
         In in = new In(args[0]);
         String[] data = in.readAllStrings();
         String [] algs = {/*"Bubble", "Insertion", "Selection", */"Shell",
-                "MergeTD", "MergeBU"};
+                "MergeTD", "MergeBU", "Quick", "Quick3Way"};
 
         for (String alg: algs) {
             String[] a = data.clone();
@@ -229,6 +296,14 @@ public class Sort {
             else if (alg.equals("Shell"))       Sort.shell(a);
             else if (alg.equals("MergeTD"))     Sort.mergeTD(a);
             else if (alg.equals("MergeBU"))     Sort.mergeBU(a);
+            else if (alg.equals("Quick")) {
+                StdRandom.shuffle(a);
+                Sort.quick(a);
+            }
+            else if (alg.equals("Quick3Way")) {
+                StdRandom.shuffle(a);
+                Sort.quick3Way(a);
+            }
             else {
                 System.out.println(alg + " is not implemented");
                 break;

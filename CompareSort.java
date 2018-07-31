@@ -10,6 +10,14 @@ public class CompareSort {
         else if (alg.equals("Shell")) Sort.shell(a);
         else if (alg.equals("MergeTD")) Sort.mergeTD(a);
         else if (alg.equals("MergeBU")) Sort.mergeBU(a);
+        else if (alg.equals("Quick")) {
+            StdRandom.shuffle(a);
+            Sort.quick(a);
+        }
+        else if (alg.equals("Quick3Way")) {
+            StdRandom.shuffle(a);
+            Sort.quick3Way(a);
+        }
         else System.out.println("Algorithm " + alg + " not implemented");
 
         if (!Sort.isSorted(a)) {
@@ -48,7 +56,7 @@ public class CompareSort {
     public static void compareInGroup(String[] algs)
     {
         int N = 10550;
-        int T = 100;
+        int T = 10;
         double timeBubble = 0.0;
 
         System.out.printf("%-10s %-8s %-8s\n", "Alg", "Time", "RatioToBubble");
@@ -65,7 +73,7 @@ public class CompareSort {
     public static void main(String[] args)
     {
         String [] algs = {"Bubble", "Insertion", "Selection", "Shell",
-                          "MergeTD", "MergeBU"};
+                          "MergeTD", "MergeBU", "Quick", "Quick3Way"};
 
         compareInPair("Insertion", "Shell");
         compareInGroup(algs);
