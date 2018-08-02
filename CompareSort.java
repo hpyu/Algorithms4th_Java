@@ -1,10 +1,13 @@
 import edu.princeton.cs.algs4.StdRandom;
 
+import static java.util.Arrays.sort;
+
 public class CompareSort {
     public static double time(String alg, Comparable[] a)
     {
         Stopwatch timer = new Stopwatch();
-        if (alg.equals("Bubble")) Sort.bubble(a);
+        if (alg.equals("JavaSort")) sort(a);
+        else if (alg.equals("Bubble")) Sort.bubble(a);
         else if (alg.equals("Selection")) Sort.selection(a);
         else if (alg.equals("Insertion")) Sort.insertion(a);
         else if (alg.equals("Shell")) Sort.shell(a);
@@ -50,30 +53,31 @@ public class CompareSort {
         double alg2Time = timeRandomInput(alg2, N, T);
 
         System.out.printf("For %d doubles,\n", N);
-        System.out.printf("%s is %.2f times faster than %s\n", alg1, alg2Time/alg1Time, alg2);
+        System.out.printf("%s is %.2f times faster than %s\n",
+                alg1, alg2Time/alg1Time, alg2);
     }
 
     public static void compareInGroup(String[] algs)
     {
         int N = 10550;
         int T = 10;
-        double timeBubble = 0.0;
+        double timeJavaSort = 0.0;
 
-        System.out.printf("%-10s %-8s %-8s\n", "Alg", "Time", "RatioToBubble");
+        System.out.printf("%-10s %-8s %-8s\n", "Alg", "Time", "RatioToJavaSort");
 
         for (String alg : algs)
         {
             double time = timeRandomInput(alg, N, T);
-            if (alg.equals("Bubble")) timeBubble = time;
+            if (alg.equals("JavaSort")) timeJavaSort = time;
 
-            System.out.printf("%-10s %-8.3f %-8.3f\n", alg, time, timeBubble/time);
+            System.out.printf("%-10s %-8.3f %-8.3f\n", alg, time, time/timeJavaSort);
         }
     }
 
     public static void main(String[] args)
     {
-        String [] algs = {"Bubble", "Insertion", "Selection", "Shell",
-                          "MergeTD", "MergeBU", "Quick", "Quick3Way"};
+        String [] algs = {"JavaSort", /*"Bubble",*/ "Insertion", "Selection",
+                          "Shell", "MergeTD", "MergeBU", "Quick", "Quick3Way"};
 
         compareInPair("Insertion", "Shell");
         compareInGroup(algs);
